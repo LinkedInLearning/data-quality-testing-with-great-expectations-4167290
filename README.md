@@ -5,8 +5,8 @@ This Docker setup provides a complete environment for working with Great Expecta
 ## Features
 
 - Python 3.12 environment
-- Great Expectations installed with all dependencies
-- Jupyter notebooks
+- Great Expectations (GX) installed with all dependencies
+- Jupyter notebooks (empty and full solution)
 - Pandas for data manipulation
 - PostgreSQL database with taxi data pre-loaded
 - Pre-configured tutorial directory and notebook
@@ -38,9 +38,8 @@ This Docker setup provides a complete environment for working with Great Expecta
 ## Data
 
 The taxi data from `https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page` is loaded into the following tables in the `taxidata` schema:
-- `yellow_tripdata_2025-01`
-- `yellow_tripdata_2025-02`
-- `yellow_tripdata_2025-03` (this file has been modified for the purpose of this tutorial)
+- `yellow_tripdata_2025-01` (January 2025 data)
+- `yellow_tripdata_2025-02` (February 2025 data)
 
 
 ## Stopping the Containers

@@ -28,7 +28,8 @@ services:
         condition: service_healthy
     volumes:
       - ./taxi-data:/app/taxi-data:ro
-      - notebook_data:/root/code/gxtutorial
+      - ./gxtutorial.ipynb:/root/code/gxtutorial/gxtutorial.ipynb
+      - ./gxtutorial_solutions.ipynb:/root/code/gxtutorial/gxtutorial_solutions.ipynb
     command: >
       sh -c "
       python3 /app/load_data.py &&
@@ -47,4 +48,3 @@ services:
 
 volumes:
   postgres_data:
-  notebook_data:

@@ -26,12 +26,6 @@ RUN pip install --no-cache-dir \
 # Copy parquet files
 COPY taxi-data/*.parquet /app/taxi-data/
 
-# Create directory for tutorial in user's home
-RUN mkdir -p /root/code/gxtutorial
-
-# Create Jupyter notebook
-RUN echo '{"cells":[],"metadata":{"kernelspec":{"display_name":"Python 3","language":"python","name":"python3"},"language_info":{"name":"python","version":"3.12.0"}},"nbformat":4,"nbformat_minor":2}' > /root/code/gxtutorial/gxtutorial.ipynb
-
 # Copy data loading script
 COPY load_data.py /app/load_data.py
 

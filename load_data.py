@@ -99,7 +99,7 @@ def load_parquet_files():
     drop_tables_cmd = """
     DROP TABLE IF EXISTS taxidata.yellow_tripdata_2025_01 CASCADE;
     DROP TABLE IF EXISTS taxidata.yellow_tripdata_2025_02 CASCADE;
-    DROP TABLE IF EXISTS taxidata.yellow_tripdata_2025_03 CASCADE;
+
     """
     subprocess.run([
         "psql", "-h", "postgres", "-U", "admin", "-d", "data",

@@ -1,48 +1,82 @@
-# Data Quality Testing with Great Expectations
-This is the repository for the LinkedIn Learning course `Data Quality Testing with Great Expectations`. The full course is available from [LinkedIn Learning][lil-course-url].
+# Great Expectations (GX) Core Tutorial Environment
 
-![lil-thumbnail-url]
+This Docker setup provides a complete environment for working with Great Expectations, including Jupyter notebooks, PostgreSQL database, and sample taxi data.
 
-## Course Description
+## Features
 
-_See the readme file in the main branch for updated instructions and information._
-## Instructions
-This repository has branches for each of the videos in the course. You can use the branch pop up menu in github to switch to a specific branch and take a look at the course at that stage, or you can add `/tree/BRANCH_NAME` to the URL to go to the branch you want to access.
+- Python 3.12 environment
+- Great Expectations installed with all dependencies
+- Jupyter notebooks
+- Pandas for data manipulation
+- PostgreSQL database with taxi data pre-loaded
+- Pre-configured tutorial directory and notebook
 
-## Branches
-The branches are structured to correspond to the videos in the course. The naming convention is `CHAPTER#_MOVIE#`. As an example, the branch named `02_03` corresponds to the second chapter and the third video in that chapter. 
-Some branches will have a beginning and an end state. These are marked with the letters `b` for "beginning" and `e` for "end". The `b` branch contains the code as it is at the beginning of the movie. The `e` branch contains the code as it is at the end of the movie. The `main` branch holds the final state of the code when in the course.
+## Quick Start
 
-When switching from one exercise files branch to the next after making changes to the files, you may get a message like this:
+0. **Open a terminal and cd into the correct dictory where the Dockerfile is located:**
+   ```bash
+   cd ~/path/to/repository
+   ```
 
-    error: Your local changes to the following files would be overwritten by checkout:        [files]
-    Please commit your changes or stash them before you switch branches.
-    Aborting
+1. **Build and start the containers:**
+   ```bash
+   docker compose up --build
+   ```
 
-To resolve this issue:
-	
-    Add changes to git using this command: git add .
-	Commit changes using this command: git commit -m "some message"
+2. **Access Jupyter Notebook:**
+   - Open your browser to `http://localhost:8888`
+   - The notebook `gxtutorial.ipynb` will be in the `/root/code/gxtutorial` directory
 
-## Installing
-1. To use these exercise files, you must have the following installed:
-	- [list of requirements for course]
-2. Clone this repository into your local machine using the terminal (Mac), CMD (Windows), or a GUI tool like SourceTree.
-3. [Course-specific instructions]
+3. **Access PostgreSQL:**
+   - Host: localhost
+   - Port: 5432
+   - Database: data
+   - Username: admin
+   - Password: admin
+   - Schema: taxidata
 
-## Instructor
+## Data
 
-Instructor name
-
-Instructor description
-
-                            
-
-Check out my other courses on [LinkedIn Learning](https://www.linkedin.com/learning/instructors/).
+The taxi data from `https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page` is loaded into the following tables in the `taxidata` schema:
+- `yellow_tripdata_2025-01`
+- `yellow_tripdata_2025-02`
+- `yellow_tripdata_2025-03` (this file has been modified for the purpose of this tutorial)
 
 
-[0]: # (Replace these placeholder URLs with actual course URLs)
+## Stopping the Containers
 
-[lil-course-url]: https://www.linkedin.com/learning/
-[lil-thumbnail-url]: https://media.licdn.com/dms/image/v2/D4E0DAQG0eDHsyOSqTA/learning-public-crop_675_1200/B4EZVdqqdwHUAY-/0/1741033220778?e=2147483647&v=beta&t=FxUDo6FA8W8CiFROwqfZKL_mzQhYx9loYLfjN-LNjgA
+```bash
+docker compose down
+```
 
+To remove all data (including the database and volumes):
+```bash
+docker compose down -v
+```
+
+**Note:** Use `docker compose down -v` when you need to start completely fresh. This will wipe the PostgreSQL database and all volumes, so you'll need to rebuild containers and reload data from scratch.
+
+
+## Common Commands
+
+- `docker compose ps` - Check container status
+- `docker compose logs -f` - View logs
+- `docker compose logs app` - View app container logs
+- `docker compose logs postgres` - View PostgreSQL logs
+- `docker compose restart` - Restart all containers
+- `docker compose exec app bash` - Open a bash shell in the app container
+- `docker compose exec postgres psql -U admin -d data` - Connect to PostgreSQL via psql
+
+## Troubleshooting
+
+**Docker daemon not running:**
+- Make sure Docker Desktop is running (check the menu bar/taskbar)
+- Restart Docker Desktop if needed
+
+**Port already in use:**
+- Check if something is using port 8888: `lsof -i :8888`
+- Or change the port in `docker-compose.yml`
+
+**Container keeps restarting:**
+- Check logs: `docker compose logs`
+- Look for error messages

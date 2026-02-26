@@ -1,0 +1,50 @@
+
+services:
+  postgres:
+    image: postgres:15
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: data
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    command: postgres -c max_wal_size=2GB -c checkpoint_timeout=15min -c wal_buffers=16MB
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d data"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    ports:
+      - "8888:8888"
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./taxi-data:/app/taxi-data:ro
+      - notebook_data:/root/code/gxtutorial
+    command: >
+      sh -c "
+      python3 /app/load_data.py &&
+      echo 'Data loading complete. Starting services...' &&
+      mkdir -p /root/code/gxtutorial/gx/uncommitted/data_docs &&
+      echo 'Starting data docs server on port 8080...' &&
+      cd /root/code/gxtutorial/gx/uncommitted/data_docs &&
+      python3 -m http.server 8080 > /dev/null 2>&1 &
+      sleep 1 &&
+      cd /root/code/gxtutorial &&
+      echo 'Starting Jupyter notebook on port 8888...' &&
+      jupyter notebook --ip=0.0.0.0 --port=8888 --no-browser --allow-root --NotebookApp.token='' --NotebookApp.password=''
+      "
+    environment:
+      - POSTGRES_CONNECTION_STRING=postgresql+psycopg2://admin:admin@postgres:5432/data
+
+volumes:
+  postgres_data:
+  notebook_data:

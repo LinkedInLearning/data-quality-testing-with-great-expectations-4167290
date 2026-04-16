@@ -2,6 +2,8 @@
 
 This Docker setup provides a complete environment for working with Great Expectations, including Jupyter notebooks, PostgreSQL database, and sample taxi data.
 
+![tn-url]
+
 ## Features
 
 - Python 3.12 environment
@@ -79,3 +81,6 @@ docker compose down -v
 **Container keeps restarting:**
 - Check logs: `docker compose logs`
 - Look for error messages
+
+
+[tn-url]: https://media.licdn.com/dms/image/v2/D4E0DAQGolNTeVyGJyQ/learning-public-crop_675_1200/B4EZstjLvTIoAY-/0/1765995757604?e=2147483647&v=beta&t=40CHyDjzD6w9rNLLmtpMFVn2y4DxQpqeDjire9nGGLo
